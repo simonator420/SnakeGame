@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -36,10 +37,12 @@ public class GameEngine {
     private static final int DOWN = 3;
     private Scene menuScene, mainScene;
     private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("/com/example/snakegame/snake_font_alternative.otf"), 90);
+    javafx.scene.image.Image berryImage = new Image("file:src/img/ic_berry.png");
     private int currentDirection;
     private boolean gameOver = false;
     List<Point> snakeBody = snake.getSnakeBody();
     Point snakeHead = snake.getSnakeHead();
+    Food food = new Food();
 
     public void startGame(Stage primaryStage){
         // Creating the checkerboard
@@ -53,15 +56,15 @@ public class GameEngine {
         gameName.setTextFill(Color.RED);
         gameName.setTranslateY(-60);
 
-
+        // Exit button
         Button exitButton = graphics.getExitGameButton();
 
-        // Adding elements to main game scene
-
+        // Creating the main game scene
         Canvas mainCanvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext mainGC = mainCanvas.getGraphicsContext2D();
         graphics.drawCheckerboard(mainGC);
 
+        // Button that starts the game scene and
         Button startButton = startGame(primaryStage, mainGC);
 
         // Adding elements to start menu
@@ -87,6 +90,7 @@ public class GameEngine {
         });
 
         snake.initializeSnake();
+        food.generateFood();
     }
 
     public void run(GraphicsContext backgroundGC) { // loop that updates each frame
@@ -96,6 +100,8 @@ public class GameEngine {
         snake.drawSnake(backgroundGC);
 
         snake.moveBody();
+
+        food.drawFood(backgroundGC, berryImage);
 
         switch (currentDirection){ // get currentDirection which stores the current direction and calls one of the methods
             case RIGHT:
@@ -112,8 +118,7 @@ public class GameEngine {
                 break;
         }
         gameOver();
-
-        System.out.println(snake.getSnakeHeadX());
+        System.out.println(snake.getSnakeBodySize());
     }
 
     private void handleKeyPress(KeyEvent keyEvent) {
@@ -156,8 +161,9 @@ public class GameEngine {
         }
 
         // if the snake's head collides with the body
-        for (int i = 1; i < snakeBody.size(); i++){ // iterates through the body, starts from one, because first is the head
-            if(snake.getSnakeHeadX() == snakeBody.get(i).getX() && snakeHead.getY() == snakeBody.get(i).getY()){ // compares the coordinates of the head with the coordinates of the body
+        for (int i = 1; i < snake.getSnakeBodySize(); i++){ // iterates through the body, starts from one, because first is the head
+            //System.out.println("Head: " + snake.getSnakeHeadY() + " " + snake.getSnakeHeadX() + " Body: " + snakeBody.get(i).getX() + " " + snakeBody.get(i).getY());
+            if((snake.getSnakeHeadX() == snakeBody.get(i).getX()) && (snakeHead.getY() == snakeBody.get(i).getY())){ // compares the coordinates of the head with the coordinates of the body
                 gameOver = true;
                 System.out.println("Umrel jsi zmrde");
                 break;

@@ -15,7 +15,7 @@ public class Snake {
 
     public void initializeSnake(){
         for (int i = 0; i < 3; i++){ // adds three initial segments to the body
-            snakeBody.add(new Point(5, ROWS / 2)); // hardcode for snake's initial position
+            snakeBody.add(new Point(5, ROWS / 2)); // hardcode for snake's initial positiond
         }
         snakeHead = snakeBody.get(0);
     }
@@ -36,6 +36,7 @@ public class Snake {
             snakeBody.get(i).x = snakeBody.get(i - 1).x;
             snakeBody.get(i).y = snakeBody.get(i - 1).y;
         }
+        System.out.println(snakeBody.size());
     }
 
     public void moveRight(){
@@ -62,11 +63,23 @@ public class Snake {
         return snakeHead;
     }
 
-    public int getSnakeHeadX(){
+    public double getSnakeHeadX(){
         return snakeHead.x;
     }
 
-    public int getSnakeHeadY(){
+    public double getSnakeHeadY(){
         return snakeHead.y;
+    }
+
+    public int getSnakeBodySize(){
+        return snakeBody.size();
+    }
+
+    public double getSnakeBodyX(int i){
+        return snakeBody.get(i).x;
+    }
+
+    public double getSnakeBodyY(int i){
+        return snakeBody.get(i).y;
     }
 }

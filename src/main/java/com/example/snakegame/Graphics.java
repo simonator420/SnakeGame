@@ -9,12 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -27,7 +21,7 @@ public class Graphics {
     private static int WIDTH = 700;
     private static int HEIGHT = WIDTH;
     private static int ROWS = 20;
-    private static final int COLUMNS = ROWS;
+    private static int COLUMNS = ROWS;
     private static int SQUARE_SIZE = WIDTH/COLUMNS;
     private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("/com/example/snakegame/snake_font_alternative.otf"), 90);
     Snake snake = new Snake();
@@ -67,6 +61,10 @@ public class Graphics {
 
     public static int getROWS() {
         return ROWS;
+    }
+
+    public static int getCOLUMNS() {
+        return COLUMNS;
     }
 
     public static int getSquareSize() {
