@@ -73,64 +73,6 @@ public class Graphics {
         }
     }
 
-    public void run(GraphicsContext backgroundGC) { // loop that updates each frame
-        snake.drawSnake(backgroundGC);
-
-        snake.moveBody();
-
-        switch (currentDirection){ // get currentDirection which stores the current direction and calls one of the methods
-            case RIGHT:
-                moveRight();
-                break;
-            case LEFT:
-                moveLeft();
-                break;
-            case UP:
-                moveUp();
-                break;
-            case DOWN:
-                moveDown();
-                break;
-        }
-    }
-
-    public void handleKeyPress(KeyEvent keyEvent) {
-        KeyCode code = keyEvent.getCode();
-        if (code == KeyCode.RIGHT || code == KeyCode.D) {
-            if (currentDirection != LEFT) {
-                currentDirection = RIGHT;
-            }
-        } else if (code == KeyCode.LEFT || code == KeyCode.A) {
-            if (currentDirection != RIGHT) {
-                currentDirection = LEFT;
-            }
-        } else if (code == KeyCode.UP || code == KeyCode.W) {
-            if (currentDirection != DOWN) {
-                currentDirection = UP;
-            }
-        } else if (code == KeyCode.DOWN || code == KeyCode.S) {
-            if (currentDirection != UP) {
-                currentDirection = DOWN;
-            }
-        }
-    }
-
-    private void moveRight(){
-        snakeHead.x++;
-    }
-
-    private void moveLeft(){
-        snakeHead.x--;
-    }
-
-    private void moveUp(){
-        snakeHead.y--;
-    }
-
-    private void moveDown(){
-        snakeHead.y++;
-    }
-
     public static int getROWS() {
         return ROWS;
     }

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -80,15 +81,57 @@ public class GameEngine {
         mainScene.setOnKeyPressed(new EventHandler<KeyEvent>() { // mapping the key presses
             @Override
             public void handle(KeyEvent keyEvent) {
-                graphics.handleKeyPress(keyEvent);
+                handleKeyPress(keyEvent);
             }
         });
 
         snake.initializeSnake();
     }
 
+    public void run(GraphicsContext backgroundGC) { // loop that updates each frame
+        snake.drawSnake(backgroundGC);
+
+        snake.moveBody();
+
+        switch (currentDirection){ // get currentDirection which stores the current direction and calls one of the methods
+            case RIGHT:
+                snake.moveRight();
+                break;
+            case LEFT:
+                snake.moveLeft();
+                break;
+            case UP:
+                snake.moveUp();
+                break;
+            case DOWN:
+                snake.moveDown();
+                break;
+        }
+    }
+
+    private void handleKeyPress(KeyEvent keyEvent) {
+        KeyCode code = keyEvent.getCode();
+        if (code == KeyCode.RIGHT || code == KeyCode.D) {
+            if (currentDirection != LEFT) {
+                currentDirection = RIGHT;
+            }
+        } else if (code == KeyCode.LEFT || code == KeyCode.A) {
+            if (currentDirection != RIGHT) {
+                currentDirection = LEFT;
+            }
+        } else if (code == KeyCode.UP || code == KeyCode.W) {
+            if (currentDirection != DOWN) {
+                currentDirection = UP;
+            }
+        } else if (code == KeyCode.DOWN || code == KeyCode.S) {
+            if (currentDirection != UP) {
+                currentDirection = DOWN;
+            }
+        }
+    }
+
     private Button startGame(Stage primaryStage, GraphicsContext mainGC) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(215), e->graphics.run(mainGC))); // sets a timeline that defines a keyframe with a duration, the action is run method and passes the GraphicsContext as an argument
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(215), e->run(mainGC))); // sets a timeline that defines a keyframe with a duration, the action is run method and passes the GraphicsContext as an argument
         timeline.setCycleCount(Animation.INDEFINITE); // calling the run function indefinite times
 
         // Start button

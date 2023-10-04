@@ -38,6 +38,22 @@ public class Snake {
         }
     }
 
+    public void moveRight(){
+        snakeHead.x++;
+    }
+
+    public void moveLeft(){
+        snakeHead.x--;
+    }
+
+    public void moveUp(){
+        snakeHead.y--;
+    }
+
+    public void moveDown(){
+        snakeHead.y++;
+    }
+
     public List<Point> getSnakeBody() {
         return snakeBody;
     }
