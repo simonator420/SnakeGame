@@ -37,6 +37,7 @@ public class GameEngine {
     private Scene menuScene, mainScene;
     private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("/com/example/snakegame/snake_font_alternative.otf"), 90);
     private int currentDirection;
+    private boolean gameOver = false;
     List<Point> snakeBody = snake.getSnakeBody();
     Point snakeHead = snake.getSnakeHead();
 
@@ -89,6 +90,9 @@ public class GameEngine {
     }
 
     public void run(GraphicsContext backgroundGC) { // loop that updates each frame
+        if (gameOver){
+            return;
+        }
         snake.drawSnake(backgroundGC);
 
         snake.moveBody();
@@ -107,6 +111,9 @@ public class GameEngine {
                 snake.moveDown();
                 break;
         }
+        gameOver();
+
+        System.out.println(snake.getSnakeHeadX());
     }
 
     private void handleKeyPress(KeyEvent keyEvent) {
@@ -131,7 +138,7 @@ public class GameEngine {
     }
 
     private Button startGame(Stage primaryStage, GraphicsContext mainGC) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(215), e->run(mainGC))); // sets a timeline that defines a keyframe with a duration, the action is run method and passes the GraphicsContext as an argument
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(110), e->run(mainGC))); // sets a timeline that defines a keyframe with a duration, the action is run method and passes the GraphicsContext as an argument
         timeline.setCycleCount(Animation.INDEFINITE); // calling the run function indefinite times
 
         // Start button
@@ -139,5 +146,22 @@ public class GameEngine {
         startButton.setOnAction(e -> { primaryStage.setScene(mainScene); timeline.play();});
 
         return startButton;
+    }
+
+    private void gameOver(){
+        // if the snake's head goes out of the game boundary
+        if (snake.getSnakeHeadX() < 0 || snake.getSnakeHeadY() < 0 || snake.getSnakeHeadX() * SQUARE_SIZE >= WIDTH || snake.getSnakeHeadY() * SQUARE_SIZE >= HEIGHT) { // compares the coordinates of the head with boundaries
+            gameOver = true;
+            System.out.println("Umrel jsi zmrde");
+        }
+
+        // if the snake's head collides with the body
+        for (int i = 1; i < snakeBody.size(); i++){ // iterates through the body, starts from one, because first is the head
+            if(snake.getSnakeHeadX() == snakeBody.get(i).getX() && snakeHead.getY() == snakeBody.get(i).getY()){ // compares the coordinates of the head with the coordinates of the body
+                gameOver = true;
+                System.out.println("Umrel jsi zmrde");
+                break;
+            }
+        }
     }
 }

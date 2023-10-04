@@ -61,4 +61,12 @@ public class Snake {
     public Point getSnakeHead() {
         return snakeHead;
     }
+
+    public int getSnakeHeadX(){
+        return snakeHead.x;
+    }
+
+    public int getSnakeHeadY(){
+        return snakeHead.y;
+    }
 }

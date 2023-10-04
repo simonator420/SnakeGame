@@ -24,21 +24,13 @@ import java.awt.*;
 import java.util.List;
 
 public class Graphics {
-    private static final int WIDTH = 700;
-    private static final int HEIGHT = WIDTH;
+    private static int WIDTH = 700;
+    private static int HEIGHT = WIDTH;
     private static int ROWS = 20;
     private static final int COLUMNS = ROWS;
     private static int SQUARE_SIZE = WIDTH/COLUMNS;
-    private static final int RIGHT = 0;
-    private static final int LEFT = 1;
-    private static final int UP = 2;
-    private static final int DOWN = 3;
-    private Scene menuScene, mainScene;
     private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("/com/example/snakegame/snake_font_alternative.otf"), 90);
-    private int currentDirection;
     Snake snake = new Snake();
-    List<Point> snakeBody = snake.getSnakeBody();
-    Point snakeHead = snake.getSnakeHead();
 
     // done function
     public Button getExitGameButton(){
@@ -79,5 +71,13 @@ public class Graphics {
 
     public static int getSquareSize() {
         return SQUARE_SIZE;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
     }
 }
