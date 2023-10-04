@@ -1,6 +1,10 @@
 package com.example.snakegame;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -8,65 +12,53 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.InputStream;
+import java.awt.*;
+import java.util.List;
 
 public class Graphics {
     private static final int WIDTH = 700;
     private static final int HEIGHT = WIDTH;
-    private static final int ROWS = 20;
+    private static int ROWS = 20;
     private static final int COLUMNS = ROWS;
-    private static final int SQUARE_SIZE = WIDTH/COLUMNS;
+    private static int SQUARE_SIZE = WIDTH/COLUMNS;
+    private static final int RIGHT = 0;
+    private static final int LEFT = 1;
+    private static final int UP = 2;
+    private static final int DOWN = 3;
     private Scene menuScene, mainScene;
     private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("/com/example/snakegame/snake_font_alternative.otf"), 90);
-    private Canvas backgroundCanvas = new Canvas(WIDTH, HEIGHT);
-    private GraphicsContext backgroundGC = backgroundCanvas.getGraphicsContext2D();
+    private int currentDirection;
+    Snake snake = new Snake();
+    List<Point> snakeBody = snake.getSnakeBody();
+    Point snakeHead = snake.getSnakeHead();
 
-    public void drawMainMenu(Stage primaryStage){
-        drawCheckerboard(backgroundGC);
-        // Game name
-        Label gameName = new Label("Ultimate Snake");
-        gameName.setFont(gameAlternativeFont);
-        gameName.setTextFill(Color.RED);
-        gameName.setTranslateY(-60);
-
-        // Start button
-        Button startButton = new Button("START");
-        startButton.setOnAction(e -> primaryStage.setScene(mainScene));
-        startButton.setStyle("-fx-background-color: RED; -fx-text-fill: white; -fx-font-size: 18px;");
-        startButton.setTranslateY(30);
-
-        // Exit button
-        Button exitButton = new Button("EXIT");
+    // done function
+    public Button getExitGameButton(){
+        javafx.scene.control.Button exitButton = new Button("EXIT");
         exitButton.setOnAction(e -> Platform.exit());
         exitButton.setStyle("-fx-background-color: RED; -fx-text-fill: white; -fx-font-size: 18px;");
         exitButton.setTranslateY(80);
-
-        // Adding elements from start menu
-        StackPane menuLayout = new StackPane();
-        menuLayout.getChildren().addAll(backgroundCanvas,gameName, startButton, exitButton);
-        menuScene = new Scene(menuLayout, WIDTH, HEIGHT);
+        return exitButton;
     }
 
-    public void drawGameScene(Stage primaryStage){
-        // Main stage settings
-        Button button2 = new Button("Necum");
-        button2.setOnAction(e -> primaryStage.setScene(menuScene));
-
-        StackPane layout2 = new StackPane();
-        layout2.getChildren().add(button2);
-        mainScene = new Scene(layout2, WIDTH, HEIGHT);
-
-        primaryStage.setScene(menuScene);
-        primaryStage.setTitle("Ultimate Snake");
-        primaryStage.show();
+    // done function
+    public Button getStartGameButton(){
+        Button startButton = new Button("START");
+        startButton.setStyle("-fx-background-color: RED; -fx-text-fill: white; -fx-font-size: 18px;");
+        startButton.setTranslateY(30);
+        return startButton;
     }
 
-    private void drawCheckerboard(GraphicsContext gc) {
+    // done method
+    public void drawCheckerboard(GraphicsContext gc) {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 if ((row + col) % 2 == 0) {
@@ -79,5 +71,71 @@ public class Graphics {
                 gc.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
             }
         }
+    }
+
+    public void run(GraphicsContext backgroundGC) { // loop that updates each frame
+        snake.drawSnake(backgroundGC);
+
+        snake.moveBody();
+
+        switch (currentDirection){ // get currentDirection which stores the current direction and calls one of the methods
+            case RIGHT:
+                moveRight();
+                break;
+            case LEFT:
+                moveLeft();
+                break;
+            case UP:
+                moveUp();
+                break;
+            case DOWN:
+                moveDown();
+                break;
+        }
+    }
+
+    public void handleKeyPress(KeyEvent keyEvent) {
+        KeyCode code = keyEvent.getCode();
+        if (code == KeyCode.RIGHT || code == KeyCode.D) {
+            if (currentDirection != LEFT) {
+                currentDirection = RIGHT;
+            }
+        } else if (code == KeyCode.LEFT || code == KeyCode.A) {
+            if (currentDirection != RIGHT) {
+                currentDirection = LEFT;
+            }
+        } else if (code == KeyCode.UP || code == KeyCode.W) {
+            if (currentDirection != DOWN) {
+                currentDirection = UP;
+            }
+        } else if (code == KeyCode.DOWN || code == KeyCode.S) {
+            if (currentDirection != UP) {
+                currentDirection = DOWN;
+            }
+        }
+    }
+
+    private void moveRight(){
+        snakeHead.x++;
+    }
+
+    private void moveLeft(){
+        snakeHead.x--;
+    }
+
+    private void moveUp(){
+        snakeHead.y--;
+    }
+
+    private void moveDown(){
+        snakeHead.y++;
+    }
+
+    public static int getROWS() {
+        return ROWS;
+    }
+
+    public static int getSquareSize() {
+        return SQUARE_SIZE;
     }
 }
