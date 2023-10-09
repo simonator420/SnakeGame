@@ -1,40 +1,48 @@
 package com.example.snakegame;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.awt.*;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Food {
-    private static int ROWS = Graphics.getROWS();
-    private static int COLUMNS = Graphics.getCOLUMNS();
-    private static int SQUARE_SIZE = Graphics.getSquareSize();
-    private static int foodX;
-    private static int foodY;
-    Snake snake = new Snake();
-    List<Point> snakeBody = snake.getSnakeBody();
-
-    // done method
-    public void generateFood(){ // generating random coordinates for the food
+    private Image foodImage;
+    private int foodX;
+    private int foodY;
+    public Food(){}
+    Snake snake = new Snake(new Point(5, 10), new ArrayList<>());
+    public void generateFood() {
         begin:
-        while (true){
-            foodX = (int)(Math.random() * ROWS); // generates random integer
-            foodY = (int)(Math.random() * COLUMNS); // generates random integer
-            System.out.println(foodX);
-            System.out.println(foodY);
+        while (true) {
+            foodX = (int) (Math.random() * 20); // generates random integer
+            foodY = (int) (Math.random() * 20); // generates random integer
 
-            for(Point snake: snakeBody){
-                if(snake.getX() == foodX && snake.getY() == foodY){ // if it collides with the snake body
-                    continue begin; // then the process is restarted to found a new place for the food
+            for (Point snake : snake.getSnakeBody()) {
+                if (snake.getX() == foodX && snake.getY() == foodY) {
+                    continue begin;
                 }
             }
-            break; // if the food is not on snake's body, the loop is ended
+
+            // int randomFoodIndex = (int) (Math.random() * FOODS_IMAGE.length);
+            // foodImage = new Image(getClass().getResourceAsStream(FOODS_IMAGE[randomFoodIndex]));
+
+            break;
         }
     }
 
-    public void drawFood(GraphicsContext gc, Image foodImage) { // rendering food on the canvas
-        // determining the food position and drawing it on canvas
-        gc.drawImage(foodImage, foodX * SQUARE_SIZE, foodY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+    public void drawFood(GraphicsContext gc, Image foodImage) {
+        gc.drawImage(foodImage, (double)(foodX * 40), (double)(foodY * 40), 40.0, 40.0);
+    }
+
+    public Image getFoodImage() {
+        return foodImage;
+    }
+
+    public int getFoodX() {
+        return foodX;
+    }
+
+    public int getFoodY() {
+        return foodY;
     }
 }

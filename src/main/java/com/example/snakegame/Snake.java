@@ -2,84 +2,106 @@ package com.example.snakegame;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    private List<Point> snakeBody = new ArrayList<>();
-    private Point snakeHead = new Point();
-    private static int ROWS = Graphics.getROWS();
-    private static int SQUARE_SIZE = Graphics.getSquareSize();
-
-    public void initializeSnake(){
-        for (int i = 0; i < 3; i++){ // adds three initial segments to the body
-            snakeBody.add(new Point(5, ROWS / 2)); // hardcode for snake's initial positiond
-        }
-        snakeHead = snakeBody.get(0);
-    }
-
-    public void drawSnake(GraphicsContext gc){ // rendering snake on the canvas
-        gc.setFill(Color.web("4674E9")); // fill the snake's body with color
-        // draws the snake's head as rounded rectangle
-        gc.fillRoundRect(snakeHead.getX() * SQUARE_SIZE, snakeHead.getY() * SQUARE_SIZE, SQUARE_SIZE - 1, SQUARE_SIZE - 1, 35, 35);
-
-        for (int i = 1; i < snakeBody.size(); i++){ // starts from 1 because head is already there
-            // determining the position of each segment of body and drawing it as a round rectangle
-            gc.fillRoundRect(snakeBody.get(i).getX() * SQUARE_SIZE, snakeBody.get(i).getY() * SQUARE_SIZE, SQUARE_SIZE - 1, SQUARE_SIZE - 1, 20, 20);
-        }
-    }
-
-    public void moveBody(){
-        for(int i = snakeBody.size() - 1; i >= 1; i--){ // iterates through the body from the tail and moves it on the position in front of it
-            snakeBody.get(i).x = snakeBody.get(i - 1).x;
-            snakeBody.get(i).y = snakeBody.get(i - 1).y;
-        }
-        System.out.println(snakeBody.size());
-    }
-
-    public void moveRight(){
-        snakeHead.x++;
-    }
-
-    public void moveLeft(){
-        snakeHead.x--;
-    }
-
-    public void moveUp(){
-        snakeHead.y--;
-    }
-
-    public void moveDown(){
-        snakeHead.y++;
-    }
-
-    public List<Point> getSnakeBody() {
-        return snakeBody;
+    private Point snakeHead;
+    private List<Point> snakeBody;
+    private Image snakeHeadImage;
+    private Image snakeImago;
+    private ImageView snakeHeadImageView;
+    private int score = 0;
+    public Snake(Point initialHead, List<Point> initialBody) {
+        this.snakeHead = initialHead;
+        this.snakeBody = initialBody;
+        this.snakeImago = new Image("file:src/img/snake_skin.png");
+        this.snakeHeadImageView = new ImageView(new Image("file:src/img/snake_head2.png"));
     }
 
     public Point getSnakeHead() {
         return snakeHead;
     }
 
-    public double getSnakeHeadX(){
-        return snakeHead.x;
+    public int getScore() {
+        return score;
     }
 
-    public double getSnakeHeadY(){
-        return snakeHead.y;
+    public void setSnakeHead(Point snakeHead) {
+        this.snakeHead = snakeHead;
     }
 
-    public int getSnakeBodySize(){
-        return snakeBody.size();
+    public List<Point> getSnakeBody() {
+        return snakeBody;
+    }
+    public void setSnakeBody(List<Point> snakeBody) {
+        this.snakeBody = snakeBody;
     }
 
-    public double getSnakeBodyX(int i){
-        return snakeBody.get(i).x;
+    public void drawSnake(GraphicsContext gc) {
+        // Draw the rotated snake head
+        snakeHeadImage = snakeHeadImageView.snapshot(null, null);
+        gc.drawImage(snakeHeadImage, snakeHead.getX() * 40.0, snakeHead.getY() * 40.0, 39.0, 39.0);
+
+        // Draw the snake body
+        for(int i = 1; i < snakeBody.size(); ++i) {
+            gc.drawImage(snakeImago, snakeBody.get(i).getX() * 40.0, snakeBody.get(i).getY() * 40.0, 39.0, 39.0);
+        }
     }
 
-    public double getSnakeBodyY(int i){
-        return snakeBody.get(i).y;
+    public void moveBody(){
+        for(int i = snakeBody.size() - 1; i >= 1; --i) {
+            ((Point)snakeBody.get(i)).x = ((Point)snakeBody.get(i - 1)).x;
+            ((Point)snakeBody.get(i)).y = ((Point)snakeBody.get(i - 1)).y;
+        }
+    }
+
+    public void initializeSnake(){
+        for(int i = 0; i < 3; ++i) {
+            snakeBody.add(new Point(5, 10));
+        }
+
+        setSnakeHead((Point)snakeBody.get(0));
+    }
+
+    public void eatFood(Food food) {
+        if (snakeHead.getX() == (double) food.getFoodX() && snakeHead.getY() == (double) food.getFoodY()) {
+            snakeBody.add(new Point(-1, -1));
+            food.generateFood();
+            this.score += 1;
+        }
+    }
+
+    public void moveRight() {
+        ++snakeHead.x;
+        snakeHeadImageView.setRotate(270.0);
+
+    }
+
+    public void moveLeft() {
+        --snakeHead.x;
+        snakeHeadImageView.setRotate(90.0);
+    }
+
+    public void moveUp() {
+        --snakeHead.y;
+        snakeHeadImageView.setRotate(180.0);
+    }
+
+    public void moveDown() {
+        ++snakeHead.y;
+        snakeHeadImageView.setRotate(0.0);
     }
 }
+
+

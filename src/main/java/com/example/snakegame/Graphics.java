@@ -1,21 +1,16 @@
 package com.example.snakegame;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.control.Label;
+import javafx.scene.text.FontWeight;
 
 import java.awt.*;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Graphics {
     private static int WIDTH = 700;
@@ -23,24 +18,36 @@ public class Graphics {
     private static int ROWS = 20;
     private static int COLUMNS = ROWS;
     private static int SQUARE_SIZE = WIDTH/COLUMNS;
-    private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("/com/example/snakegame/snake_font_alternative.otf"), 90);
-    Snake snake = new Snake();
+    private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("file:src/font/snake_font.otf"), 90);
+    private Snake snake = new Snake(new Point(5, 10), new ArrayList<>());
 
     // done function
-    public Button getExitGameButton(){
-        javafx.scene.control.Button exitButton = new Button("EXIT");
+    public javafx.scene.control.Button getExitGameButton(){
+        javafx.scene.control.Button exitButton = new javafx.scene.control.Button("EXIT");
         exitButton.setOnAction(e -> Platform.exit());
-        exitButton.setStyle("-fx-background-color: RED; -fx-text-fill: white; -fx-font-size: 18px;");
+        exitButton.setFont(Font.font ("Verdana", FontWeight.BOLD, 18));
+        exitButton.setTextFill(Color.web("WHITE"));
+        exitButton.setStyle("-fx-background-color: \"FF474C\";");
         exitButton.setTranslateY(80);
         return exitButton;
     }
 
     // done function
     public Button getStartGameButton(){
-        Button startButton = new Button("START");
-        startButton.setStyle("-fx-background-color: RED; -fx-text-fill: white; -fx-font-size: 18px;");
+        javafx.scene.control.Button startButton = new Button("START");
+        startButton.setFont(Font.font ("Verdana", FontWeight.BOLD, 18));
+        startButton.setTextFill(Color.web("WHITE"));
+        startButton.setStyle("-fx-background-color: \"FF474C\";");
         startButton.setTranslateY(30);
         return startButton;
+    }
+
+    public Label getGameName(){
+        Label gameName = new Label("Ultimate Snake");
+        gameName.setFont(Font.loadFont ("file:src/font/snake_font.otf", 95));
+        gameName.setTextFill(Color.web("FF474C"));
+        gameName.setTranslateY(-60);
+        return gameName;
     }
 
     // done method
@@ -48,7 +55,7 @@ public class Graphics {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 if ((row + col) % 2 == 0) {
-                    gc.setFill(Color.WHITE);
+                    gc.setFill(javafx.scene.paint.Color.WHITE);
                 } else {
                     gc.setFill(Color.web("#f2f2f2"));
                 }
