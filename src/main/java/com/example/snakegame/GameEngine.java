@@ -22,15 +22,11 @@ import java.util.ArrayList;
 public class GameEngine {
     private static final int WIDTH = 960;
     private static final int HEIGHT = 720;
-    private static final int SQUARE_SIZE = 40;
     private static final int RIGHT = 0;
     private static final int LEFT = 1;
     private static final int UP = 2;
     private static final int DOWN = 3;
-    private static final Color BACKGROUND_COLOR1 = Color.web("AAD751");
-    private static final Color BACKGROUND_COLOR2 = Color.web("A2D149");
     private static final Color GAME_OVER_COLOR = Color.RED;
-    private static final Color SCORE_COLOR = Color.WHITE;
     private static final String GAME_TITLE = "Snake";
     private static final String GAME_OVER_TEXT = "Game Over";
     javafx.scene.image.Image berryImage = new Image("file:src/img/food.png");
@@ -40,7 +36,7 @@ public class GameEngine {
     private Food food = new Food();
     private boolean gameOver;
     private int currentDirection;
-    private int score = 0;
+    private int highScore = 0;
     private Graphics graphics = new Graphics();
 
     public void startGame(Stage primaryStage) {
@@ -48,10 +44,6 @@ public class GameEngine {
 
         Canvas menuCanvas = new Canvas(WIDTH, HEIGHT);
         gc = menuCanvas.getGraphicsContext2D();
-
-//        javafx.scene.control.Label gameName = new javafx.scene.control.Label("Ultimate Snake");
-//        gameName.setTextFill(Color.RED);
-//        gameName.setTranslateY(-60);
 
         Canvas mainCanvas = new Canvas(WIDTH, HEIGHT);
         root.getChildren().add(mainCanvas);
@@ -77,7 +69,7 @@ public class GameEngine {
         snake.setSnakeHead((Point) this.snake.getSnakeBody().get(0));
         food.generateFood();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((95.0)), e -> run(gc)));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((90.0)), e -> run(gc)));
         timeline.setCycleCount(-1);
         startButton.setOnAction(e -> { primaryStage.setScene(mainScene); timeline.play(); });
 
@@ -88,9 +80,11 @@ public class GameEngine {
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
+            if (snake.getScore() > highScore) {
+                highScore = snake.getScore();
+            }
             return;
         }
-        //gc.drawImage(staticBackground, 0, 0);
         graphics.drawCheckerboard(gc);
 
         food.drawFood(gc, berryImage);
@@ -177,6 +171,7 @@ public class GameEngine {
     private void drawScore() {
         gc.setFill(Color.RED);
         gc.setFont(new Font("Digital-7", 35.0));
-        drawText("Score: " + snake.getScore(), 780.0, 35.0);
+        drawText("Score: " + snake.getScore(), 780.0, 40.0);
+        drawText("High Score: " + highScore, 735, 100);
     }
 }

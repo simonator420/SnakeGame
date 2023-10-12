@@ -1,16 +1,8 @@
 package com.example.snakegame;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.image.Image;
-import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.awt.*;
 import java.util.List;
@@ -25,7 +17,7 @@ public class Snake {
     public Snake(Point initialHead, List<Point> initialBody) {
         this.snakeHead = initialHead;
         this.snakeBody = initialBody;
-        this.snakeImago = new Image("file:src/img/snake_skin.png");
+        this.snakeImago = new Image("file:src/img/snake_skin_radius.png");
         this.snakeHeadImageView = new ImageView(new Image("file:src/img/snake_head2.png"));
     }
 

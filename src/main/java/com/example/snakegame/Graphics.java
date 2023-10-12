@@ -5,12 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.image.Image;
 import javafx.scene.control.Label;
 import javafx.scene.text.FontWeight;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class Graphics {
     private static int WIDTH = 960;
