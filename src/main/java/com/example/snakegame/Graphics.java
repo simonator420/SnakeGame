@@ -39,7 +39,7 @@ public class Graphics {
     }
 
     public Button getRestartButton(){
-        Button restartButton = new Button("Restart");
+        Button restartButton = new Button("RESTART");
         restartButton.setFont(Font.font ("Verdana", FontWeight.BOLD, 18));
         restartButton.setTextFill(Color.web("WHITE"));
         restartButton.setStyle("-fx-background-color: \"FF474C\";");

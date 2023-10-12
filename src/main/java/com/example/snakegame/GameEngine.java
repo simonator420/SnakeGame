@@ -38,9 +38,12 @@ public class GameEngine {
     private int currentDirection;
     private int highScore = 0;
     private Graphics graphics = new Graphics();
+    private Scene gameOverScene; // Make this an instance variable
+    private Stage mainStage;
 
     public void startGame(Stage primaryStage) {
         Group root = new Group();
+        this.mainStage = primaryStage;
 
         Canvas menuCanvas = new Canvas(WIDTH, HEIGHT);
         gc = menuCanvas.getGraphicsContext2D();
@@ -57,6 +60,19 @@ public class GameEngine {
         Button startButton = graphics.getStartGameButton();
         menuLayout.getChildren().addAll(menuCanvas, gameName, startButton, exitButton);
         Scene menuScene = new Scene(menuLayout, WIDTH, HEIGHT);
+
+        StackPane gameOverLayout = new StackPane();
+        Label gameOverText = new Label("GAME OVER");
+        gameOverText.setFont(Font.loadFont ("file:src/font/snake_font.otf", 95));
+        gameOverText.setTextFill(Color.web("FF474C"));
+        gameOverText.setTranslateY(-35);
+        Button restartButton = graphics.getRestartButton();
+        restartButton.setOnAction(e -> {
+            resetGame();
+            mainStage.setScene(mainScene);
+        });
+        gameOverLayout.getChildren().addAll(gameOverText, restartButton, exitButton);
+        gameOverScene = new Scene(gameOverLayout, WIDTH, HEIGHT);
 
         primaryStage.setScene(menuScene);
         primaryStage.setTitle(GAME_TITLE);
@@ -83,6 +99,7 @@ public class GameEngine {
             if (snake.getScore() > highScore) {
                 highScore = snake.getScore();
             }
+            mainStage.setScene(gameOverScene);
             return;
         }
         graphics.drawCheckerboard(gc);
@@ -147,9 +164,9 @@ public class GameEngine {
         if (snake.getSnakeHead().x < 0 || snake.getSnakeHead().y < 0 ||
                 snake.getSnakeHead().x * Graphics.getSquareSize() >= Graphics.getHEIGHT() ||
                 snake.getSnakeHead().y * Graphics.getSquareSize() >= Graphics.getHEIGHT()) {
-            gc.setFill(GAME_OVER_COLOR);
-            gc.setFont(new Font("Digital-7", 70.0));
-            drawText(GAME_OVER_TEXT, 228.57142857142858, 400.0);
+//            gc.setFill(GAME_OVER_COLOR);
+//            gc.setFont(new Font("Digital-7", 70.0));
+//            drawText(GAME_OVER_TEXT, 228.57142857142858, 400.0);
             gameOver = true;
         }
 
@@ -162,6 +179,16 @@ public class GameEngine {
                 break;
             }
         }
+    }
+
+    private void resetGame() {
+        snake = new Snake(new Point(5, 10), new ArrayList<>());
+        food = new Food();
+        gameOver = false;
+        currentDirection = RIGHT; // or any default direction you want
+        snake.initializeSnake();
+        snake.setSnakeHead((Point) this.snake.getSnakeBody().get(0));
+        food.generateFood();
     }
 
     private void drawText(String text, double x, double y) {
