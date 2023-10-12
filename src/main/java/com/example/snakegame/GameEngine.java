@@ -151,7 +151,8 @@ public class GameEngine {
 
     private void gameOver() {
         if (snake.getSnakeHead().x < 0 || snake.getSnakeHead().y < 0 ||
-                snake.getSnakeHead().x * SQUARE_SIZE >= WIDTH || snake.getSnakeHead().y * SQUARE_SIZE >= HEIGHT) {
+                snake.getSnakeHead().x * Graphics.getSquareSize() >= Graphics.getWIDTH() ||
+                snake.getSnakeHead().y * Graphics.getSquareSize() >= Graphics.getHEIGHT()) {
             gc.setFill(GAME_OVER_COLOR);
             gc.setFont(new Font("Digital-7", 70.0));
             drawText(GAME_OVER_TEXT, 228.57142857142858, 400.0);
@@ -174,8 +175,8 @@ public class GameEngine {
     }
 
     private void drawScore() {
-        gc.setFill(SCORE_COLOR);
+        gc.setFill(Color.RED);
         gc.setFont(new Font("Digital-7", 35.0));
-        drawText("Score: " + snake.getScore(), 10.0, 35.0);
+        drawText("Score: " + snake.getScore(), 710.0, 35.0);
     }
 }

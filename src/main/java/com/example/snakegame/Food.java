@@ -14,20 +14,17 @@ public class Food {
     public void generateFood() {
         begin:
         while (true) {
-            foodX = (int) (Math.random() * 20); // generates random integer
-            foodY = (int) (Math.random() * 20); // generates random integer
+            foodX = (int) (Math.random() * Graphics.getCOLUMNS()); // generates random integer within checkerboard columns
+            foodY = (int) (Math.random() * Graphics.getROWS());    // generates random integer within checkerboard rows
 
-            for (Point snake : snake.getSnakeBody()) {
-                if (snake.getX() == foodX && snake.getY() == foodY) {
-                    continue begin;
+            for (Point snakePart : snake.getSnakeBody()) {
+                if (snakePart.getX() == foodX && snakePart.getY() == foodY) {
+                    continue begin; // if food is generated on the snake's body, regenerate
                 }
             }
-
-            // int randomFoodIndex = (int) (Math.random() * FOODS_IMAGE.length);
-            // foodImage = new Image(getClass().getResourceAsStream(FOODS_IMAGE[randomFoodIndex]));
-
             break;
         }
+        System.out.println(foodX + " "+ foodY);
     }
 
     public void drawFood(GraphicsContext gc, Image foodImage) {
