@@ -80,6 +80,7 @@ public class Snake {
             food.generateFood();
             this.score += 1;
         }
+        System.out.println(score);
     }
 
     public void moveRight() {
