@@ -70,7 +70,6 @@ public class Snake {
         for(int i = 0; i < 3; ++i) {
             snakeBody.add(new Point(5, 10));
         }
-
         setSnakeHead((Point)snakeBody.get(0));
     }
 

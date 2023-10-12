@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Graphics {
-    private static int WIDTH = 720;
+    private static int WIDTH = 960;
     private static int HEIGHT = 720;
     private static int ROWS = 18;
     private static int COLUMNS = 18;
@@ -55,7 +55,7 @@ public class Graphics {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 if ((row + col) % 2 == 0) {
-                    gc.setFill(javafx.scene.paint.Color.WHITE);
+                    gc.setFill(Color.WHITE);
                 } else {
                     gc.setFill(Color.web("#f2f2f2"));
                 }
@@ -63,7 +63,10 @@ public class Graphics {
                 double y = row * SQUARE_SIZE;
                 gc.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
             }
-        }
+        gc.setFill(Color.web("#f2f2f2"));
+        gc.fillRect(COLUMNS * SQUARE_SIZE, 0, WIDTH - COLUMNS * SQUARE_SIZE, HEIGHT);
+    }
+
     }
 
     public static int getROWS() {

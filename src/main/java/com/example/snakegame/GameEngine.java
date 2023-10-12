@@ -77,7 +77,7 @@ public class GameEngine {
         snake.setSnakeHead((Point) this.snake.getSnakeBody().get(0));
         food.generateFood();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((90.0)), e -> run(gc)));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis((95.0)), e -> run(gc)));
         timeline.setCycleCount(-1);
         startButton.setOnAction(e -> { primaryStage.setScene(mainScene); timeline.play(); });
 
@@ -151,7 +151,7 @@ public class GameEngine {
 
     private void gameOver() {
         if (snake.getSnakeHead().x < 0 || snake.getSnakeHead().y < 0 ||
-                snake.getSnakeHead().x * Graphics.getSquareSize() >= Graphics.getWIDTH() ||
+                snake.getSnakeHead().x * Graphics.getSquareSize() >= Graphics.getHEIGHT() ||
                 snake.getSnakeHead().y * Graphics.getSquareSize() >= Graphics.getHEIGHT()) {
             gc.setFill(GAME_OVER_COLOR);
             gc.setFont(new Font("Digital-7", 70.0));
@@ -177,6 +177,6 @@ public class GameEngine {
     private void drawScore() {
         gc.setFill(Color.RED);
         gc.setFont(new Font("Digital-7", 35.0));
-        drawText("Score: " + snake.getScore(), 710.0, 35.0);
+        drawText("Score: " + snake.getScore(), 780.0, 35.0);
     }
 }
