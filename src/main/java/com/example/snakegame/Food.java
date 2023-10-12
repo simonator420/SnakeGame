@@ -12,10 +12,11 @@ public class Food {
     public Food(){}
     Snake snake = new Snake(new Point(5, 10), new ArrayList<>());
     public void generateFood() {
+        int borderOffset = 1; // Adjust this value to increase the distance from the border
         begin:
         while (true) {
-            foodX = (int) (Math.random() * Graphics.getCOLUMNS()); // generates random integer within checkerboard columns
-            foodY = (int) (Math.random() * Graphics.getROWS());    // generates random integer within checkerboard rows
+            foodX = borderOffset + (int) (Math.random() * (Graphics.getCOLUMNS() - 2 * borderOffset));
+            foodY = borderOffset + (int) (Math.random() * (Graphics.getROWS() - 2 * borderOffset));
 
             for (Point snakePart : snake.getSnakeBody()) {
                 if (snakePart.getX() == foodX && snakePart.getY() == foodY) {
@@ -26,6 +27,20 @@ public class Food {
         }
         System.out.println(foodX + " "+ foodY);
     }
+//        begin:
+//        while (true) {
+//            foodX = (int) (Math.random() * Graphics.getCOLUMNS()); // generates random integer within checkerboard columns
+//            foodY = (int) (Math.random() * Graphics.getROWS());    // generates random integer within checkerboard rows
+//
+//            for (Point snakePart : snake.getSnakeBody()) {
+//                if (snakePart.getX() == foodX && snakePart.getY() == foodY) {
+//                    continue begin; // if food is generated on the snake's body, regenerate
+//                }
+//            }
+//            break;
+//        }
+//        System.out.println(foodX + " "+ foodY);
+//    }
 
     public void drawFood(GraphicsContext gc, Image foodImage) {
         gc.drawImage(foodImage, (double)(foodX * 40), (double)(foodY * 40), 40.0, 40.0);

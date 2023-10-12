@@ -38,6 +38,15 @@ public class Graphics {
         return startButton;
     }
 
+    public Button getRestartButton(){
+        Button restartButton = new Button("Restart");
+        restartButton.setFont(Font.font ("Verdana", FontWeight.BOLD, 18));
+        restartButton.setTextFill(Color.web("WHITE"));
+        restartButton.setStyle("-fx-background-color: \"FF474C\";");
+        restartButton.setTranslateY(30);
+        return restartButton;
+    }
+
     public Label getGameName(){
         Label gameName = new Label("Ultimate Snake");
         gameName.setFont(Font.loadFont ("file:src/font/snake_font.otf", 95));
