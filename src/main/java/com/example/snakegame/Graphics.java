@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 public class Graphics {
     private static int WIDTH = 700;
-    private static int HEIGHT = WIDTH;
+    private static int HEIGHT = 720;
     private static int ROWS = 20;
-    private static int COLUMNS = ROWS;
-    private static int SQUARE_SIZE = WIDTH/COLUMNS;
+    private static int COLUMNS = 15;
+    private static int SQUARE_SIZE = 40;
     private Font gameAlternativeFont = Font.loadFont(getClass().getResourceAsStream("file:src/font/snake_font.otf"), 90);
     private Snake snake = new Snake(new Point(5, 10), new ArrayList<>());
 

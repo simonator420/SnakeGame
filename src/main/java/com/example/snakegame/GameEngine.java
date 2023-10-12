@@ -20,10 +20,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class GameEngine {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 800;
-    private static final int ROWS = 20;
-    private static final int COLUMNS = 20;
+    private static final int WIDTH = 960;
+    private static final int HEIGHT = 720;
     private static final int SQUARE_SIZE = 40;
     private static final int RIGHT = 0;
     private static final int LEFT = 1;
@@ -37,13 +35,13 @@ public class GameEngine {
     private static final String GAME_OVER_TEXT = "Game Over";
     javafx.scene.image.Image berryImage = new Image("file:src/img/food.png");
     private Image staticBackground = new Image("file:src/img/dirt.jpg");
-
     private GraphicsContext gc;
     private Snake snake = new Snake(new Point(5, 10), new ArrayList<>());
     private Food food = new Food();
     private boolean gameOver;
     private int currentDirection;
     private int score = 0;
+    private Graphics graphics = new Graphics();
 
     public void startGame(Stage primaryStage) {
         Group root = new Group();
@@ -82,13 +80,19 @@ public class GameEngine {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis((90.0)), e -> run(gc)));
         timeline.setCycleCount(-1);
         startButton.setOnAction(e -> { primaryStage.setScene(mainScene); timeline.play(); });
+
+        gc.setStroke(javafx.scene.paint.Color.RED);
+        gc.setLineWidth(5); // Adjust the width of the border as needed
+        gc.strokeRect(0, 0, WIDTH, HEIGHT);
     }
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
             return;
         }
-        gc.drawImage(staticBackground, 0, 0);
+        //gc.drawImage(staticBackground, 0, 0);
+        graphics.drawCheckerboard(gc);
+
         food.drawFood(gc, berryImage);
         snake.drawSnake(gc);
         drawScore();
